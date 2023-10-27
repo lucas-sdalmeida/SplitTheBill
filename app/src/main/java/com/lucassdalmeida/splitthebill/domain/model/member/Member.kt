@@ -2,9 +2,15 @@ package com.lucassdalmeida.splitthebill.domain.model.member
 
 class Member(
     val id: Long,
-    val name: String,
+    name: String,
     expenses: Set<Expense> = emptySet()
 ) {
+    var name = name
+        set(value) {
+            require(value.isNotBlank()) { "Member's name cannot be blank" }
+            field = value
+        }
+
     private val _expenses = expenses.toMutableSet()
     val expenses get() = _expenses.toSet()
 
