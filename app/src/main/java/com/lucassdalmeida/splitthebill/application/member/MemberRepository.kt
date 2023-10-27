@@ -9,7 +9,7 @@ interface MemberRepository {
 
     fun findAll(): List<Member>
 
-    fun remove(member: Member)
+    fun remove(id: Long)
 
     operator fun contains(id: Long): Boolean
 }
