@@ -25,7 +25,10 @@ class MembersListViewAdapter(
 
         with(memberTileHolder) {
             memberName.text = member.name
-            memberTotalExpense.text = "R$${member.totalExpense}"
+            memberTotalExpense.text = context.getString(
+                R.string.member_total_expense,
+                String.format("%.2f", member.totalExpense)
+            )
         }
 
         return targetView
