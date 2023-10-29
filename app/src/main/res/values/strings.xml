@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SplitTheBill</string>
     <string name="split_the_bill_button_text">Rachar</string>
+    <string name="add_member_option_title">Adicionar membro</string>
 </resources>
