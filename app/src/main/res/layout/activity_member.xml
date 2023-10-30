@@ -29,56 +29,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activityMemberToolbar"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <EditText
+        android:id="@+id/expenseDescriptionField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="5dp"
+
+        android:textSize="16sp"
+        android:hint="@string/expense_description_field_hint"
+        android:autofillHints=""
+        android:inputType="text"
 
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/expensePriceField"
+        app:layout_constraintTop_toBottomOf="@id/memberNameField"/>
+
+    <EditText
+        android:id="@+id/expensePriceField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:textSize="16sp"
+        android:hint="@string/expense_price_field_hint"
+        android:autofillHints=""
+        android:inputType="numberDecimal"
+
+        app:layout_constraintStart_toEndOf="@id/expenseDescriptionField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/memberNameField"
-        app:layout_constraintBottom_toTopOf="@id/addMemberButton">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-            android:text="@string/expenses_text"
-            android:textSize="16sp"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/addExpenseOption"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/expensesListView"/>
-
-        <ImageView
-            android:id="@+id/addExpenseOption"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-
-            android:layout_marginEnd="15dp"
-
-            android:src="@drawable/ic_add_expense"
-            android:contentDescription="@string/add_expense_icon"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <ListView
-            android:id="@+id/expensesListView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addExpenseOption"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@id/memberNameField"/>
 
     <Button
         android:id="@+id/addMemberButton"
