@@ -1,12 +1,16 @@
 package com.lucassdalmeida.splitthebill.controller
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.lucassdalmeida.splitthebill.R
 import com.lucassdalmeida.splitthebill.application.member.FindMembersService
+import com.lucassdalmeida.splitthebill.application.member.MemberDto
 import com.lucassdalmeida.splitthebill.application.member.fromDto
 import com.lucassdalmeida.splitthebill.databinding.ActivityMainBinding
 import com.lucassdalmeida.splitthebill.domain.model.member.Member
@@ -35,7 +39,26 @@ class MainActivityController(
     private fun registerForMemberActivityResult() = mainActivity.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
-        Log.d("MainActivity", "Member activity has finished!")
+        handleMemberIntentResult(it)
+    }
+
+    private fun handleMemberIntentResult(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK)
+            return
+
+        val memberDto = result.data?.getParcelableExtra<MemberDto>(MEMBER_EXTRA) ?: return
+        val member = Member.fromDto(memberDto)
+        val memberIndex = membersList.indexOf(member)
+
+        if (memberIndex == -1) {
+            membersList.add(member)
+        }
+        else {
+            membersList.removeAt(memberIndex)
+            membersList.add(memberIndex, member)
+        }
+
+        membersAdapter.notifyDataSetChanged()
     }
 
     fun onOptionsItemSelected(item: MenuItem): Boolean {
