@@ -1,10 +1,11 @@
-package com.lucassdalmeida.splitthebill
+package com.lucassdalmeida.splitthebill.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.lucassdalmeida.splitthebill.MEMBER_EXTRA
 import com.lucassdalmeida.splitthebill.application.member.AddMemberService
 import com.lucassdalmeida.splitthebill.databinding.ActivityMemberBinding
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteIdGenerator

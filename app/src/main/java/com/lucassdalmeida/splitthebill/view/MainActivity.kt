@@ -1,4 +1,4 @@
-package com.lucassdalmeida.splitthebill
+package com.lucassdalmeida.splitthebill.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.lucassdalmeida.splitthebill.R
 import com.lucassdalmeida.splitthebill.databinding.ActivityMainBinding
 import com.lucassdalmeida.splitthebill.domain.model.member.Member
 
