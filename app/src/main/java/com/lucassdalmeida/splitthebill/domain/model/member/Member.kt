@@ -20,6 +20,8 @@ class Member(
         require(name.isNotBlank()) { "Member's name cannot be blank!" }
     }
 
+    companion object
+
     fun addExpense(expense: Expense) = _expenses.add(expense)
 
     fun removeExpense(expense: Expense) = _expenses.remove(expense)
