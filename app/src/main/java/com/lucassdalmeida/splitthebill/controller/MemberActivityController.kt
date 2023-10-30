@@ -11,6 +11,7 @@ import com.lucassdalmeida.splitthebill.application.member.RenameMemberService
 import com.lucassdalmeida.splitthebill.databinding.ActivityMemberBinding
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteIdGenerator
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteMemberRepositoryImpl
+import com.lucassdalmeida.splitthebill.view.ExpenseDialog
 import com.lucassdalmeida.splitthebill.view.MemberActivity
 
 class MemberActivityController(
@@ -27,6 +28,7 @@ class MemberActivityController(
 
     init {
         setUpView()
+        setAddExpenseListener()
     }
 
     private fun setUpView() {
@@ -88,5 +90,9 @@ class MemberActivityController(
         catch (error: Exception) {
             Log.e("MemberActivity", error.stackTraceToString())
         }
+    }
+
+    private fun setAddExpenseListener() = activityMemberBinding.addExpenseOption.setOnClickListener{
+        ExpenseDialog(memberActivity).also { it.show() }
     }
 }

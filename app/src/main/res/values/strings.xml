@@ -9,4 +9,8 @@
     <string name="back_button">Voltar</string>
     <string name="expenses_text">Despesas</string>
     <string name="edit_member_button">Editar</string>
+    <string name="expense_description_field_hint">Descrição do gasto</string>
+    <string name="expense_price_field_hint">Valor</string>
+    <string name="add_expense_button">Adicionar despesa</string>
+    <string name="expense_dialog_title">Adicionar despesa</string>
 </resources>
