@@ -27,7 +27,7 @@ class SQLiteIdGenerator(context: Context): IdGeneratorService<Long> {
 
     private fun tableNotExists(): Boolean {
         val cursor = sqLiteDatabase.rawQuery(
-            "SELECT NAME FROM SQLITE_MASTER WHERE TYPE = 'TABLE' AND NAME=$MEMBER_TABLE_NAME",
+            "SELECT NAME FROM SQLITE_MASTER WHERE TYPE = 'TABLE' AND NAME='$MEMBER_TABLE_NAME'",
             arrayOf()
         )
         return !cursor.moveToFirst()
