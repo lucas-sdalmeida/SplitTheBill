@@ -143,7 +143,7 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
         """
 
         const val IS_IN_REPOSITORY = """
-            SELECT COUNT(*) WHERE ID = ?
+            SELECT COUNT(*) FROM $MEMBER_TABLE_NAME WHERE ID = ?
         """
     }
 }
