@@ -43,6 +43,10 @@ class MemberActivityController(
         with(activityMemberBinding) {
             addMemberButton.text = memberActivity.getString(R.string.edit_member_button)
             memberNameField.setText(dto.name)
+            dto.expense?.let {(description, price) ->
+                expenseDescriptionField.setText(description)
+                expensePriceField.setText(String.format("%.2f", price))
+            }
         }
 
         setEditMemberListener(dto.id)
