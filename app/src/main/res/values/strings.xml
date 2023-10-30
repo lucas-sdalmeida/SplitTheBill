@@ -8,4 +8,5 @@
     <string name="add_expense_icon">Adicionar despesa</string>
     <string name="back_button">Voltar</string>
     <string name="expenses_text">Despesas</string>
+    <string name="edit_member_button">Editar</string>
 </resources>
