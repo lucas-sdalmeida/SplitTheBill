@@ -105,8 +105,6 @@ class MemberActivityController(
             val expense = getExpenseFromView()
             val member = updateMemberService.rename(id, name, expense)
 
-            Log.d("MemberActivity", member.toString())
-
             Intent().also {
                 it.putExtra(MEMBER_EXTRA, member)
                 memberActivity.setResult(RESULT_OK, it)
