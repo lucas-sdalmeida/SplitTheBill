@@ -4,8 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.database.Cursor
-import androidx.core.database.getStringOrNull
-import androidx.core.database.sqlite.transaction
 import com.lucassdalmeida.splitthebill.application.member.MemberRepository
 import com.lucassdalmeida.splitthebill.domain.model.member.Expense
 import com.lucassdalmeida.splitthebill.domain.model.member.Member
@@ -18,19 +16,11 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
     )
 
     init {
-        sqLiteDatabase.transaction {
-            execSQL(CREATE_MEMBER_TABLE)
-            execSQL(CREATE_MEMBER_EXPENSE_TABLE)
-        }
+        sqLiteDatabase.execSQL(CREATE_MEMBER_TABLE)
     }
 
     override fun create(member: Member) {
-        sqLiteDatabase.transaction {
-            replace(MEMBER_TABLE_NAME, null, member.toContentValues())
-            member.expense.forEach {
-                replace(EXPENSE_TABLE_NAME, null, it.toContentValues(member.id))
-            }
-        }
+        sqLiteDatabase.replace(MEMBER_TABLE_NAME, null, member.toContentValues())
     }
 
     override fun findById(id: Long): Member? {
@@ -43,7 +33,7 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
 
     override fun findAll(): List<Member> {
         val members = mutableListOf<Member>()
-        val cursor = sqLiteDatabase.rawQuery(SELECT_ALL_MEMBERS, arrayOf())
+        val cursor = sqLiteDatabase.rawQuery(SELECT_ALL_MEMBERS, emptyArray())
 
         while (cursor.moveToNext())
             members.add(cursor.rowToMember())
@@ -53,48 +43,38 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
     }
 
     override fun remove(id: Long) {
-        sqLiteDatabase.transaction {
-            delete(MEMBER_TABLE_NAME, "$ID_COLUMN = ?", arrayOf(id.toString()))
-            delete(EXPENSE_TABLE_NAME, "$ID_COLUMN = ?", arrayOf(id.toString()))
-        }
+        sqLiteDatabase.delete(
+            MEMBER_TABLE_NAME,
+            "$ID_COLUMN = ?",
+            arrayOf(id.toString())
+        )
     }
 
     override operator fun contains(id: Long): Boolean {
         val cursor = sqLiteDatabase.rawQuery(IS_IN_REPOSITORY, arrayOf(id.toString()))
-        return cursor.moveToNext() && cursor.getLong(0) == 1L
+        val exists = cursor.moveToNext() && cursor.getLong(0) == 1L
+
+        cursor.close()
+        return exists
     }
 
     private fun Member.toContentValues() = ContentValues().also {
         it.put(ID_COLUMN, id)
         it.put(NAME_COLUMN, name)
-    }
-
-    private fun Expense.toContentValues(memberId: Long) = ContentValues().also {
-        it.put(ID_COLUMN, memberId)
-        it.put(DESCRIPTION_COLUMN, description)
-        it.put(PRICE_COLUMN, price)
+        it.put(EXPENSE_COLUMN, expense?.description ?: "")
+        it.put(EXPENSE_PRICE, expense?.price ?: 0.0)
     }
 
     private fun Cursor.rowToMember(): Member {
-        val idColumnIndex = getColumnIndexOrThrow(ID_COLUMN)
-        val member = Member(
-            getLong(idColumnIndex),
-            getString(getColumnIndexOrThrow(NAME_COLUMN))
+        val expense = Expense(
+            getString(getColumnIndexOrThrow(EXPENSE_COLUMN)),
+            getDouble(getColumnIndexOrThrow(EXPENSE_PRICE)),
         )
-
-        val descriptionColumnIndex = getColumnIndexOrThrow(DESCRIPTION_COLUMN)
-        if (getStringOrNull(descriptionColumnIndex) == null)
-            return member
-
-        while (moveToNext() && getLong(idColumnIndex) == member.id) {
-            member.addExpense(Expense(
-                getString(descriptionColumnIndex),
-                getDouble(getColumnIndexOrThrow(PRICE_COLUMN))
-            ))
-        }
-
-        moveToPrevious()
-        return member
+        return Member(
+            getLong(getColumnIndexOrThrow(ID_COLUMN)),
+            getString(getColumnIndexOrThrow(NAME_COLUMN)),
+            expense,
+        )
     }
 
     companion object {
@@ -103,44 +83,23 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
         const val MEMBER_TABLE_NAME = "MEMBER"
         const val ID_COLUMN = "ID"
         const val NAME_COLUMN = "NAME"
-
-        const val EXPENSE_TABLE_NAME = "MEMBER_EXPENSE"
-        const val DESCRIPTION_COLUMN = "DESCRIPTION"
-        const val PRICE_COLUMN = "PRICE"
+        const val EXPENSE_COLUMN = "EXPENSE"
+        const val EXPENSE_PRICE = "PRICE"
 
         const val CREATE_MEMBER_TABLE = """
                     CREATE TABLE IF NOT EXISTS $MEMBER_TABLE_NAME(
                         $ID_COLUMN INTEGER PRIMARY KEY,
-                        $NAME_COLUMN TEXT NOT NULL
-                    );
-                """
-        const val CREATE_MEMBER_EXPENSE_TABLE = """
-                    CREATE TABLE IF NOT EXISTS $EXPENSE_TABLE_NAME(
-                        $ID_COLUMN INTEGER,
-                        $DESCRIPTION_COLUMN TEXT,
-                        $PRICE_COLUMN REAL,
-                        
-                        CONSTRAINT MEMBER_EXPENSE_PK PRIMARY KEY (
-                            $ID_COLUMN, 
-                            $DESCRIPTION_COLUMN,
-                            $PRICE_COLUMN),
-                        CONSTRAINT MEMBER_EXPENSE_MEMBER_FK FOREIGN KEY ($ID_COLUMN) 
-                            REFERENCES $MEMBER_TABLE_NAME($ID_COLUMN)
+                        $NAME_COLUMN TEXT NOT NULL,
+                        $EXPENSE_COLUMN TEXT,
+                        $EXPENSE_PRICE REAL
                     );
                 """
 
         const val SELECT_MEMBER = """
-            SELECT M.$ID_COLUMN $ID_COLUMN, M.$NAME_COLUMN $NAME_COLUMN,
-                E.$DESCRIPTION_COLUMN $DESCRIPTION_COLUMN, E.$PRICE_COLUMN $PRICE_COLUMN
-            FROM $MEMBER_TABLE_NAME M LEFT OUTER JOIN $EXPENSE_TABLE_NAME E ON
-                M.$ID_COLUMN = E.$ID_COLUMN
-            WHERE M.$ID_COLUMN = ?
+            SELECT * FROM $MEMBER_TABLE_NAME WHERE $ID_COLUMN = ?
         """
         const val SELECT_ALL_MEMBERS = """
-            SELECT M.$ID_COLUMN $ID_COLUMN, M.$NAME_COLUMN $NAME_COLUMN,
-                E.$DESCRIPTION_COLUMN $DESCRIPTION_COLUMN, E.$PRICE_COLUMN, $PRICE_COLUMN
-            FROM $MEMBER_TABLE_NAME M LEFT OUTER JOIN $EXPENSE_TABLE_NAME E ON
-                M.$ID_COLUMN = E.$ID_COLUMN
+            SELECT * FROM $MEMBER_TABLE_NAME
         """
 
         const val IS_IN_REPOSITORY = """
