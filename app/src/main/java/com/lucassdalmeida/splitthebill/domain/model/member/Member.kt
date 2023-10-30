@@ -11,6 +11,8 @@ class Member(
             field = value
         }
 
+    val totalSpent get() = expense?.price ?: 0.0
+
     init {
         require(name.isNotBlank()) { "Member's name cannot be blank!" }
     }
