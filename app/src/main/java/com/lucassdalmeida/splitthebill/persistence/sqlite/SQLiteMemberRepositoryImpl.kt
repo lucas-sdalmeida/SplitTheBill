@@ -66,10 +66,12 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
     }
 
     private fun Cursor.rowToMember(): Member {
-        val expense = Expense(
-            getString(getColumnIndexOrThrow(EXPENSE_COLUMN)),
-            getDouble(getColumnIndexOrThrow(EXPENSE_PRICE)),
-        )
+        val description = getString(getColumnIndexOrThrow(EXPENSE_COLUMN))
+        val price = getDouble(getColumnIndexOrThrow(EXPENSE_PRICE))
+        val expense = when {
+            description.isNotBlank() && price > 0 ->Expense(description, price)
+            else -> null
+        }
         return Member(
             getLong(getColumnIndexOrThrow(ID_COLUMN)),
             getString(getColumnIndexOrThrow(NAME_COLUMN)),

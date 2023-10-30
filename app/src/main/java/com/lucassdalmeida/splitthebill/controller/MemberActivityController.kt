@@ -51,10 +51,14 @@ class MemberActivityController(
     private fun setAddMemberListener() = activityMemberBinding.addMemberButton.setOnClickListener {
         try {
             val name = getNameFromView()
-            val expenseDescription = getExpenseDescriptionFromView()
-            val expensePrice = getExpensePriceFromView()
+            val description = getExpenseDescriptionFromView()
+            val price = getExpensePriceFromView()
+            val expense = when {
+                description.isNotBlank() && price > 0 -> Expense(description, price)
+                else -> null
+            }
 
-            val member = addMemberService.add(name, Expense(expenseDescription, expensePrice))
+            val member = addMemberService.add(name, expense)
 
             Intent().also {
                 it.putExtra(MEMBER_EXTRA, member)
