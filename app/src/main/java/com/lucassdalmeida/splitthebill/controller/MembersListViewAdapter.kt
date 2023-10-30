@@ -28,7 +28,7 @@ class MembersListViewAdapter(
             memberName.text = member.name
             memberTotalExpense.text = context.getString(
                 R.string.price_format,
-                String.format("%.2f", member.totalExpense)
+                String.format("%.2f", member.expense?.price ?: 0.0)
             )
         }
 
