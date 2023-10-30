@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class MemberDto(
     val id: Long,
     val name: String,
-    val expenses: List<Pair<String, Double>>
+    val expense: Pair<String, Double>?
 ) : Parcelable

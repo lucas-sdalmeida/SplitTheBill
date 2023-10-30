@@ -27,7 +27,7 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
     override fun create(member: Member) {
         sqLiteDatabase.transaction {
             replace(MEMBER_TABLE_NAME, null, member.toContentValues())
-            member.expenses.forEach {
+            member.expense.forEach {
                 replace(EXPENSE_TABLE_NAME, null, it.toContentValues(member.id))
             }
         }

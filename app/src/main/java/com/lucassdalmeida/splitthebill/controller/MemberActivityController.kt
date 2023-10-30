@@ -7,7 +7,7 @@ import android.widget.Toast
 import com.lucassdalmeida.splitthebill.R
 import com.lucassdalmeida.splitthebill.application.member.AddMemberService
 import com.lucassdalmeida.splitthebill.application.member.MemberDto
-import com.lucassdalmeida.splitthebill.application.member.RenameMemberService
+import com.lucassdalmeida.splitthebill.application.member.UpdateMemberService
 import com.lucassdalmeida.splitthebill.databinding.ActivityMemberBinding
 import com.lucassdalmeida.splitthebill.domain.model.member.Expense
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteIdGenerator
@@ -25,8 +25,8 @@ class MemberActivityController(
         SQLiteMemberRepositoryImpl(memberActivity),
         SQLiteIdGenerator(memberActivity),
     )}
-    private val renameMemberService by lazy {
-        RenameMemberService(SQLiteMemberRepositoryImpl(memberActivity))
+    private val updateMemberService by lazy {
+        UpdateMemberService(SQLiteMemberRepositoryImpl(memberActivity))
     }
 
     init {
@@ -78,7 +78,7 @@ class MemberActivityController(
             .setOnClickListener {
         try {
             val name = activityMemberBinding.memberNameField.text.toString()
-            val member = renameMemberService.rename(id, name)
+            val member = updateMemberService.rename(id, name)
 
             Log.d("MemberActivity", member.toString())
 

@@ -3,7 +3,7 @@ package com.lucassdalmeida.splitthebill.domain.model.member
 class Member(
     val id: Long,
     name: String,
-    expenses: Set<Expense> = emptySet()
+    var expense: Expense? = null,
 ) {
     var name = name
         set(value) {
@@ -11,20 +11,11 @@ class Member(
             field = value
         }
 
-    private val _expenses = expenses.toMutableSet()
-    val expenses get() = _expenses.toSet()
-
-    val totalExpense get() = _expenses.sumOf { it.price }
-
     init {
         require(name.isNotBlank()) { "Member's name cannot be blank!" }
     }
 
-    companion object
-
-    fun addExpense(expense: Expense) = _expenses.add(expense)
-
-    fun removeExpense(expense: Expense) = _expenses.remove(expense)
+    companion object {}
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -41,6 +32,5 @@ class Member(
         return id.hashCode()
     }
 
-    override fun toString() ="Member(id=$id, name='$name', _expenses=$_expenses, " +
-            "totalExpense=$totalExpense)"
+    override fun toString() ="Member(id=$id, name='$name', expense=$expense)"
 }
