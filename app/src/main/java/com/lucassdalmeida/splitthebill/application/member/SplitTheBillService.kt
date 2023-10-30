@@ -1,7 +1,7 @@
 package com.lucassdalmeida.splitthebill.application.member
 
 class SplitTheBillService(private val memberRepository: MemberRepository) {
-    fun split() : Map<Long, Double> {
+    fun split() : Map<MemberDto, Double> {
         val members = memberRepository.findAll()
 
         if (members.isEmpty())
@@ -9,6 +9,6 @@ class SplitTheBillService(private val memberRepository: MemberRepository) {
 
         val expensesMean = members.sumOf { it.totalSpent } / members.size
 
-        return members.associate { it.id to expensesMean - it.totalSpent }
+        return members.associate { it.toDto() to expensesMean - it.totalSpent }
     }
 }

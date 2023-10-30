@@ -13,4 +13,6 @@
     <string name="expense_price_field_hint">Valor do gasto (Opcional)</string>
     <string name="add_expense_button">Adicionar despesa</string>
     <string name="expense_dialog_title">Adicionar despesa</string>
+    <string name="split_the_bill_error_toast">São necessários membros no grupo para rachar a conta!</string>
+    <string name="deviation_format">%1$sR$%2$s</string>
 </resources>

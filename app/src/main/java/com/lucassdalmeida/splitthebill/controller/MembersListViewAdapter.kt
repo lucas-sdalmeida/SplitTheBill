@@ -10,17 +10,19 @@ import android.widget.TextView
 import com.lucassdalmeida.splitthebill.R
 import com.lucassdalmeida.splitthebill.databinding.MemberTileBinding
 import com.lucassdalmeida.splitthebill.domain.model.member.Member
+import kotlin.math.absoluteValue
+import kotlin.math.sign
 
 class MembersListViewAdapter(
     context: Context,
-    private val memberList: MutableList<Member>,
-): ArrayAdapter<Member>(context, LAYOUT, memberList) {
+    private val memberList: MutableList<Pair<Member, Double?>>,
+): ArrayAdapter<Pair<Member, Double?>>(context, LAYOUT, memberList) {
     companion object {
         val LAYOUT = R.layout.member_tile
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val member = memberList[position]
+        val (member, deviation) = memberList[position]
         val targetView = convertView ?: createView(parent)
         val memberTileHolder = targetView.tag as MemberTileHolder
 
@@ -30,6 +32,14 @@ class MembersListViewAdapter(
                 R.string.price_format,
                 String.format("%.2f", member.totalSpent)
             )
+            memberBalanceFactor.text = when (deviation) {
+                null -> ""
+                else -> context.getString(
+                    R.string.deviation_format,
+                    getDeviationSign(deviation),
+                    String.format("%.2f", deviation.absoluteValue)
+                )
+            }
         }
 
         return targetView
@@ -47,6 +57,11 @@ class MembersListViewAdapter(
         return memberTileBinding.root.also {
             it.tag = memberTileHolder
         }
+    }
+
+    private fun getDeviationSign(deviation: Double) = when {
+        deviation.sign >= 0 -> "+"
+        else -> "-"
     }
 
     private data class MemberTileHolder(
