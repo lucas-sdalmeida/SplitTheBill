@@ -6,8 +6,11 @@ import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.lucassdalmeida.splitthebill.R
+import com.lucassdalmeida.splitthebill.application.member.FindMembersService
+import com.lucassdalmeida.splitthebill.application.member.fromDto
 import com.lucassdalmeida.splitthebill.databinding.ActivityMainBinding
 import com.lucassdalmeida.splitthebill.domain.model.member.Member
+import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteMemberRepositoryImpl
 import com.lucassdalmeida.splitthebill.view.MainActivity
 import com.lucassdalmeida.splitthebill.view.MemberActivity
 
@@ -18,11 +21,16 @@ class MainActivityController(
     private val membersList = mutableListOf<Member>()
     private val membersAdapter = MembersListViewAdapter(mainActivity, membersList)
     private val memberActivityResultLauncher: ActivityResultLauncher<Intent>
+    private val findMembersService = FindMembersService(SQLiteMemberRepositoryImpl(mainActivity))
 
     init {
+        fetchAllMembers()
         activityMainBinding.membersListView.adapter = membersAdapter
         memberActivityResultLauncher = registerForMemberActivityResult()
     }
+
+    private fun fetchAllMembers() = findMembersService.findAll()
+        .forEach { membersList.add(Member.fromDto(it)) }
 
     private fun registerForMemberActivityResult() = mainActivity.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
