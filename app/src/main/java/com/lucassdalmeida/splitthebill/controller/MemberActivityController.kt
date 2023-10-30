@@ -51,12 +51,7 @@ class MemberActivityController(
     private fun setAddMemberListener() = activityMemberBinding.addMemberButton.setOnClickListener {
         try {
             val name = getNameFromView()
-            val description = getExpenseDescriptionFromView()
-            val price = getExpensePriceFromView()
-            val expense = when {
-                description.isNotBlank() && price > 0 -> Expense(description, price)
-                else -> null
-            }
+            val expense = getExpenseFromView()
 
             val member = addMemberService.add(name, expense)
 
@@ -73,6 +68,16 @@ class MemberActivityController(
         catch (error: Exception) {
             Log.e("MemberActivity", error.stackTraceToString())
         }
+    }
+
+    private fun getExpenseFromView(): Expense? {
+        val description = getExpenseDescriptionFromView()
+        val price = getExpensePriceFromView()
+        val expense = when {
+            description.isNotBlank() && price > 0 -> Expense(description, price)
+            else -> null
+        }
+        return expense
     }
 
     private fun getNameFromView() = with(activityMemberBinding) {
@@ -93,7 +98,8 @@ class MemberActivityController(
             .setOnClickListener {
         try {
             val name = getNameFromView()
-            val member = updateMemberService.rename(id, name)
+            val expense = getExpenseFromView()
+            val member = updateMemberService.rename(id, name, expense)
 
             Log.d("MemberActivity", member.toString())
 
