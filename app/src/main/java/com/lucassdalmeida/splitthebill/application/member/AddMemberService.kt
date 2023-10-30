@@ -7,12 +7,12 @@ class AddMemberService(
     private val memberRepository: MemberRepository,
     private val longIdGeneratorService: IdGeneratorService<Long>,
 ) {
-    fun add(name: String): Member {
+    fun add(name: String): MemberDto {
         val id = longIdGeneratorService.next()
         val member = Member(id, name)
 
         memberRepository.create(member)
 
-        return member
+        return member.toDto()
     }
 }
