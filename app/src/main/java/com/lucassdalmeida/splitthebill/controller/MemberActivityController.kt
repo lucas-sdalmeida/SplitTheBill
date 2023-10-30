@@ -9,6 +9,7 @@ import com.lucassdalmeida.splitthebill.application.member.AddMemberService
 import com.lucassdalmeida.splitthebill.application.member.MemberDto
 import com.lucassdalmeida.splitthebill.application.member.RenameMemberService
 import com.lucassdalmeida.splitthebill.databinding.ActivityMemberBinding
+import com.lucassdalmeida.splitthebill.domain.model.member.Expense
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteIdGenerator
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteMemberRepositoryImpl
 import com.lucassdalmeida.splitthebill.view.ExpenseDialog
@@ -18,6 +19,8 @@ class MemberActivityController(
     private val memberActivity: MemberActivity,
     private val activityMemberBinding: ActivityMemberBinding,
 ) {
+    private val expensesList = mutableListOf<Expense>()
+    private val expensesListViewAdapter = ExpensesListViewAdapter(memberActivity, expensesList)
     private val addMemberService by lazy { AddMemberService(
         SQLiteMemberRepositoryImpl(memberActivity),
         SQLiteIdGenerator(memberActivity),
@@ -29,6 +32,8 @@ class MemberActivityController(
     init {
         setUpView()
         setAddExpenseListener()
+
+        activityMemberBinding.expensesListView.adapter = expensesListViewAdapter
     }
 
     private fun setUpView() {
