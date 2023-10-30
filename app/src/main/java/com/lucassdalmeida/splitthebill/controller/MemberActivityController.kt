@@ -57,7 +57,7 @@ class MemberActivityController(
     private fun setAddMemberListener() = activityMemberBinding.addMemberButton.setOnClickListener {
         try {
             val name = activityMemberBinding.memberNameField.text.toString()
-            val member = addMemberService.add(name)
+            val member = addMemberService.add(name, expensesList.toSet())
 
             Intent().also {
                 it.putExtra(MEMBER_EXTRA, member)
@@ -98,6 +98,27 @@ class MemberActivityController(
     }
 
     private fun setAddExpenseListener() = activityMemberBinding.addExpenseOption.setOnClickListener{
-        ExpenseDialog(memberActivity).also { it.show() }
+        ExpenseDialog(memberActivity).also {
+            it.show()
+            it.setOnDismissListener {
+                addOrReplaceExpense(it.expense)
+                expensesListViewAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun addOrReplaceExpense(expense: Expense?) {
+        if (expense == null)
+            return
+
+        val expenseIndex = expensesList.indexOf(expense)
+
+        if (expenseIndex == -1) {
+            expensesList.add(expense)
+            return
+        }
+
+        expensesList.removeAt(expenseIndex)
+        expensesList.add(expenseIndex, expense)
     }
 }
