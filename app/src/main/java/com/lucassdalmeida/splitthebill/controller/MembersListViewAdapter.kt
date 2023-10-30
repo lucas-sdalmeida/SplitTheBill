@@ -1,4 +1,4 @@
-package com.lucassdalmeida.splitthebill.view
+package com.lucassdalmeida.splitthebill.controller
 
 import android.content.Context
 import android.content.Context.LAYOUT_INFLATER_SERVICE
