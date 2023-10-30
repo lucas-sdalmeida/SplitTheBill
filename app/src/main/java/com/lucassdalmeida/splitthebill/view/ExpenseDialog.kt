@@ -16,8 +16,6 @@ class ExpenseDialog(
 ) {
     var expense: Expense? = null
         private set
-    var isOpen = true
-        private set
     private val expenseDialogBinding: ExpenseDialogBinding
     private val dialog = Dialog(context)
 
@@ -40,7 +38,6 @@ class ExpenseDialog(
         try {
             expense = getExpenseFromView()
             Log.d("MemberActivity", expense.toString())
-            isOpen = false
             dialog.dismiss()
         }
         catch (error: IllegalArgumentException) {
