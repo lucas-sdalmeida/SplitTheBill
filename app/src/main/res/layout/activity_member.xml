@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MemberActivity">
+
+    <include
+        layout="@layout/app_toolbar"
+        android:id="@+id/activityMemberToolbar"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/memberNameField"/>
+
+    <EditText
+        android:id="@+id/memberNameField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:textSize="16sp"
+        android:hint="@string/member_name_field_text"
+        android:autofillHints="name"
+        android:inputType="textPersonName"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activityMemberToolbar"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memberNameField"
+        app:layout_constraintBottom_toTopOf="@id/addMemberButton">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="@string/expenses_text"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/addExpenseOption"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/expensesListView"/>
+
+        <ImageView
+            android:id="@+id/addExpenseOption"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+
+            android:layout_marginEnd="15dp"
+
+            android:src="@drawable/ic_add_expense"
+            android:contentDescription="@string/add_expense_icon"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ListView
+            android:id="@+id/expensesListView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addExpenseOption"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/addMemberButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/add_member_button_text"
+        android:textSize="16sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
