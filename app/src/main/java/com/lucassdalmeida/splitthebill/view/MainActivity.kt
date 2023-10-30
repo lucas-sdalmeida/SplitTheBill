@@ -1,8 +1,10 @@
 package com.lucassdalmeida.splitthebill.view
 
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.lucassdalmeida.splitthebill.R
 import com.lucassdalmeida.splitthebill.controller.MainActivityController
@@ -26,4 +28,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = controller.onOptionsItemSelected(item)
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        menuInflater.inflate(R.menu.context_menu_main, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem) = controller.onContextItemSelected(item)
+
+    override fun onDestroy() {
+        controller.onDestroy()
+        super.onDestroy()
+    }
 }

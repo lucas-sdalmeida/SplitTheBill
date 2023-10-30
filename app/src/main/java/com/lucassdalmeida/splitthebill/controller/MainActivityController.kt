@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Parcelable
 import android.util.Log
 import android.view.MenuItem
+import android.widget.AdapterView.AdapterContextMenuInfo
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -13,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.lucassdalmeida.splitthebill.R
 import com.lucassdalmeida.splitthebill.application.member.FindMembersService
 import com.lucassdalmeida.splitthebill.application.member.MemberDto
+import com.lucassdalmeida.splitthebill.application.member.RemoveMemberService
 import com.lucassdalmeida.splitthebill.application.member.SplitTheBillService
 import com.lucassdalmeida.splitthebill.application.member.fromDto
 import com.lucassdalmeida.splitthebill.application.member.toDto
@@ -31,6 +33,7 @@ class MainActivityController(
     private val memberActivityResultLauncher: ActivityResultLauncher<Intent>
     private val findMembersService = FindMembersService(SQLiteMemberRepositoryImpl(mainActivity))
     private val splitTheBillService = SplitTheBillService(SQLiteMemberRepositoryImpl(mainActivity))
+    private val removeMemberService = RemoveMemberService(SQLiteMemberRepositoryImpl(mainActivity))
 
     init {
         fetchAllMembers()
@@ -38,6 +41,7 @@ class MainActivityController(
         memberActivityResultLauncher = registerForMemberActivityResult()
         setMembersListViewListener()
         setSplitTheBillListener()
+        mainActivity.registerForContextMenu(activityMainBinding.membersListView)
     }
 
     private fun fetchAllMembers() = findMembersService.findAll()
@@ -111,4 +115,25 @@ class MainActivityController(
         }
         return true
     }
+
+    fun onContextItemSelected(item: MenuItem): Boolean {
+        if (item.itemId != R.id.removeMemberOption)
+            return false
+
+        val position = (item.menuInfo as AdapterContextMenuInfo).position
+        val memberId = membersList[position].first.id
+
+        return try {
+            removeMemberService.remove(memberId)
+            membersList.removeAt(position)
+            membersAdapter.notifyDataSetChanged()
+            true
+        }
+        catch (error: Exception) {
+            Log.e("MainActivity", error.stackTraceToString())
+            false
+        }
+    }
+
+    fun onDestroy() = mainActivity.unregisterForContextMenu(activityMainBinding.membersListView)
 }
