@@ -133,7 +133,7 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
             SELECT M.$ID_COLUMN $ID_COLUMN, M.$NAME_COLUMN $NAME_COLUMN,
                 E.$DESCRIPTION_COLUMN $DESCRIPTION_COLUMN, E.$PRICE_COLUMN $PRICE_COLUMN
             FROM $MEMBER_TABLE_NAME M LEFT OUTER JOIN $EXPENSE_TABLE_NAME E ON
-                M.$ID_COLUMN = E.$ID_COLUMN AND M.ID_COLUMN = ?
+                M.$ID_COLUMN = E.$ID_COLUMN AND M.$ID_COLUMN = ?
         """
         const val SELECT_ALL_MEMBERS = """
             SELECT M.$ID_COLUMN $ID_COLUMN, M.$NAME_COLUMN $NAME_COLUMN,
