@@ -111,8 +111,7 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
         const val CREATE_MEMBER_TABLE = """
                     CREATE TABLE IF NOT EXISTS $MEMBER_TABLE_NAME(
                         $ID_COLUMN INTEGER PRIMARY KEY,
-                        $NAME_COLUMN TEXT NOT NULL,
-                        EXPENSES TEXT NOT NULL
+                        $NAME_COLUMN TEXT NOT NULL
                     );
                 """
         const val CREATE_MEMBER_EXPENSE_TABLE = """
