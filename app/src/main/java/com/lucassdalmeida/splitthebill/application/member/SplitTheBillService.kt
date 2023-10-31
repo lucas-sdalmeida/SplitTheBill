@@ -9,6 +9,6 @@ class SplitTheBillService(private val memberRepository: MemberRepository) {
 
         val expensesMean = members.sumOf { it.totalSpent } / members.size
 
-        return members.associate { it.toDto() to expensesMean - it.totalSpent }
+        return members.associate { it.toDto() to it.totalSpent - expensesMean }
     }
 }
