@@ -16,4 +16,5 @@
     <string name="split_the_bill_error_toast">São necessários membros no grupo para rachar a conta!</string>
     <string name="deviation_format">%1$sR$%2$s</string>
     <string name="remove_member_title">Remover membro</string>
+    <string name="total_to_receive">Total a receber:</string>
 </resources>
