@@ -2,14 +2,20 @@ package com.lucassdalmeida.splitthebill.controller
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.text.Editable
 import android.util.Log
 import android.widget.Toast
+import androidx.core.view.children
 import com.lucassdalmeida.splitthebill.R
 import com.lucassdalmeida.splitthebill.application.member.AddMemberService
 import com.lucassdalmeida.splitthebill.application.member.MemberDto
 import com.lucassdalmeida.splitthebill.application.member.UpdateMemberService
+import com.lucassdalmeida.splitthebill.application.member.fromDto
 import com.lucassdalmeida.splitthebill.databinding.ActivityMemberBinding
 import com.lucassdalmeida.splitthebill.domain.model.member.Expense
+import com.lucassdalmeida.splitthebill.domain.model.member.Member
+import com.lucassdalmeida.splitthebill.persistence.inmemory.InMemoryIdGenerator
+import com.lucassdalmeida.splitthebill.persistence.inmemory.InMemoryMemberRepository
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteIdGenerator
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteMemberRepositoryImpl
 import com.lucassdalmeida.splitthebill.view.MemberActivity
@@ -39,14 +45,12 @@ class MemberActivityController(
         }
 
         val dto = memberActivity.intent.getParcelableExtra<MemberDto>(MEMBER_EXTRA) ?: return
+        val member = Member.fromDto(dto)
 
         with(activityMemberBinding) {
             addMemberButton.text = memberActivity.getString(R.string.edit_member_button)
-            memberNameField.setText(dto.name)
-            dto.expense?.let {(description, price) ->
-                expenseDescriptionField.setText(description)
-                expensePriceField.setText(String.format("%.2f", price))
-            }
+            memberNameField.setText(member.name)
+            putExpensesOnView(member.expenses)
         }
 
         setEditMemberListener(dto.id)
@@ -55,7 +59,7 @@ class MemberActivityController(
     private fun setAddMemberListener() = activityMemberBinding.addMemberButton.setOnClickListener {
         try {
             val name = getNameFromView()
-            val expense = getExpenseFromView()
+            val expense = getExpensesFromView()
 
             val member = addMemberService.add(name, expense)
 
@@ -74,35 +78,65 @@ class MemberActivityController(
         }
     }
 
-    private fun getExpenseFromView(): Expense? {
-        val description = getExpenseDescriptionFromView()
-        val price = getExpensePriceFromView()
-        val expense = when {
-            description.isNotBlank() && price > 0 -> Expense(description, price)
-            else -> null
-        }
-        return expense
+    private fun getExpensesFromView(): Set<Expense> {
+        val expenses = mutableSetOf<Expense>()
+
+        getExpense1()?.let { expenses.add(it) }
+        getExpense2()?.let { expenses.add(it) }
+        getExpense3()?.let { expenses.add(it) }
+
+        return expenses
+    }
+
+    private fun getExpense1(): Expense? {
+        val description = activityMemberBinding.expenseDescriptionField1.text.toString()
+        val price = activityMemberBinding.expensePriceField1.text.toString()
+
+        if (description.isBlank() || price.isBlank()) return null
+
+        return Expense(description, price.toDouble())
+    }
+
+    private fun getExpense2(): Expense? {
+        val description = activityMemberBinding.expenseDescriptionField2.text.toString()
+        val price = activityMemberBinding.expensePriceField2.text.toString()
+
+        if (description.isBlank() || price.isBlank()) return null
+
+        return Expense(description, price.toDouble())
+    }
+
+    private fun getExpense3(): Expense? {
+        val description = activityMemberBinding.expenseDescriptionField3.text.toString()
+        val price = activityMemberBinding.expensePriceField3.text.toString()
+
+        if (description.isBlank() || price.isBlank()) return null
+
+        return Expense(description, price.toDouble())
     }
 
     private fun getNameFromView() = with(activityMemberBinding) {
         memberNameField.text.toString()
     }
 
-    private fun getExpenseDescriptionFromView() = with(activityMemberBinding) {
-        expenseDescriptionField.text.toString()
-    }
+    private fun putExpensesOnView(expenses: Set<Expense>) {
+        val views = with(activityMemberBinding) {listOf(
+            expenseDescriptionField1 to expensePriceField1,
+            expenseDescriptionField2 to expensePriceField2,
+            expenseDescriptionField2 to expensePriceField2,
+        )}
 
-    private fun getExpensePriceFromView() = with(activityMemberBinding) {
-        expensePriceField.text.toString().let {
-            if (it.isBlank()) 0.0 else it.toDouble()
-        }
+        expenses.forEachIndexed { index, expense -> views[index].apply {
+            first.setText(expense.description)
+            second.setText(String.format("%.2f", expense.price))
+        }}
     }
 
     private fun setEditMemberListener(id: Long) = activityMemberBinding.addMemberButton
             .setOnClickListener {
         try {
             val name = getNameFromView()
-            val expense = getExpenseFromView()
+            val expense = getExpensesFromView()
             val member = updateMemberService.rename(id, name, expense)
 
             Intent().also {

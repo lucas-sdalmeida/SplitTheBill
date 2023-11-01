@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.database.Cursor
+import android.util.Log
 import com.lucassdalmeida.splitthebill.application.member.MemberRepository
 import com.lucassdalmeida.splitthebill.domain.model.member.Expense
 import com.lucassdalmeida.splitthebill.domain.model.member.Member
@@ -61,21 +62,23 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
     private fun Member.toContentValues() = ContentValues().also {
         it.put(ID_COLUMN, id)
         it.put(NAME_COLUMN, name)
-        it.put(EXPENSE_COLUMN, expense?.description ?: "")
-        it.put(EXPENSE_PRICE, expense?.price ?: 0.0)
+        it.put(EXPENSES_COLUMN, expenses.joinToString(";") { e -> e.toString() })
     }
 
     private fun Cursor.rowToMember(): Member {
-        val description = getString(getColumnIndexOrThrow(EXPENSE_COLUMN))
-        val price = getDouble(getColumnIndexOrThrow(EXPENSE_PRICE))
-        val expense = when {
-            description.isNotBlank() && price > 0 ->Expense(description, price)
-            else -> null
+        val expensesColumn = getString(getColumnIndexOrThrow(EXPENSES_COLUMN))
+        val expenses = when {
+            expensesColumn.isBlank() -> emptySet()
+            else -> expensesColumn.split(";")
+                .map { it.split(",") }
+                .map { Expense(it[0], it[1].toDouble()) }
+                .toSet()
         }
+
         return Member(
             getLong(getColumnIndexOrThrow(ID_COLUMN)),
             getString(getColumnIndexOrThrow(NAME_COLUMN)),
-            expense,
+            expenses,
         )
     }
 
@@ -85,15 +88,13 @@ class SQLiteMemberRepositoryImpl(context: Context): MemberRepository {
         const val MEMBER_TABLE_NAME = "MEMBER"
         const val ID_COLUMN = "ID"
         const val NAME_COLUMN = "NAME"
-        const val EXPENSE_COLUMN = "EXPENSE"
-        const val EXPENSE_PRICE = "PRICE"
+        const val EXPENSES_COLUMN = "EXPENSES"
 
         const val CREATE_MEMBER_TABLE = """
                     CREATE TABLE IF NOT EXISTS $MEMBER_TABLE_NAME(
                         $ID_COLUMN INTEGER PRIMARY KEY,
                         $NAME_COLUMN TEXT NOT NULL,
-                        $EXPENSE_COLUMN TEXT,
-                        $EXPENSE_PRICE REAL
+                        $EXPENSES_COLUMN TEXT NOT NULL
                     );
                 """
 

@@ -6,11 +6,14 @@ import com.lucassdalmeida.splitthebill.domain.model.member.Member
 fun Member.toDto() = MemberDto(
     id,
     name,
-    expense?.let { it.description to it.price },
+    expenses.map { it.description to it.price }
+        .toSet(),
 )
 
 fun Member.Companion.fromDto(dto: MemberDto) = Member(
     dto.id,
     dto.name,
-    dto.expense?.let { (description, price) -> Expense(description, price) }
+    dto.expenses
+        .map { (description, price) -> Expense(description, price) }
+        .toSet(),
 )

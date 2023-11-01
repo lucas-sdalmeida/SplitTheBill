@@ -13,5 +13,5 @@ data class Expense(val description: String, val price: Double) {
         require(errorMessage.isBlank()) { errorMessage.toString() }
     }
 
-    override fun toString() = "Expense(description='$description', price=$price)"
+    override fun toString() = "$description,$price"
 }

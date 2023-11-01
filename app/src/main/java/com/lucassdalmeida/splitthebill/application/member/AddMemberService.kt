@@ -8,7 +8,7 @@ class AddMemberService(
     private val memberRepository: MemberRepository,
     private val longIdGeneratorService: IdGeneratorService<Long>,
 ) {
-    fun add(name: String, expense: Expense?): MemberDto {
+    fun add(name: String, expense: Set<Expense> = emptySet()): MemberDto {
         val id = longIdGeneratorService.next()
         val member = Member(id, name, expense)
 

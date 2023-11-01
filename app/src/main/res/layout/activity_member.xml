@@ -29,35 +29,108 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activityMemberToolbar"/>
 
-    <EditText
-        android:id="@+id/expenseDescriptionField"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/expenses"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginEnd="5dp"
-
-        android:textSize="16sp"
-        android:hint="@string/expense_description_field_hint"
-        android:autofillHints=""
-        android:inputType="text"
+        android:layout_marginTop="10dp"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/expensePriceField"
-        app:layout_constraintTop_toBottomOf="@id/memberNameField"/>
-
-    <EditText
-        android:id="@+id/expensePriceField"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:textSize="16sp"
-        android:hint="@string/expense_price_field_hint"
-        android:autofillHints=""
-        android:inputType="numberDecimal"
-
-        app:layout_constraintStart_toEndOf="@id/expenseDescriptionField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/memberNameField"/>
+        app:layout_constraintTop_toBottomOf="@id/memberNameField">
+
+        <EditText
+            android:id="@+id/expenseDescriptionField1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginEnd="5dp"
+
+            android:textSize="16sp"
+            android:hint="@string/expense_description_field_hint"
+            android:autofillHints=""
+            android:inputType="text"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/expensePriceField1"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <EditText
+            android:id="@+id/expensePriceField1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:textSize="16sp"
+            android:hint="@string/expense_price_field_hint"
+            android:autofillHints=""
+            android:inputType="numberDecimal"
+
+            app:layout_constraintStart_toEndOf="@id/expenseDescriptionField1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <EditText
+            android:id="@+id/expenseDescriptionField2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginEnd="5dp"
+
+            android:textSize="16sp"
+            android:hint="@string/expense_description_field_hint"
+            android:autofillHints=""
+            android:inputType="text"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/expensePriceField2"
+            app:layout_constraintTop_toBottomOf="@id/expenseDescriptionField1"/>
+
+        <EditText
+            android:id="@+id/expensePriceField2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:textSize="16sp"
+            android:hint="@string/expense_price_field_hint"
+            android:autofillHints=""
+            android:inputType="numberDecimal"
+
+            app:layout_constraintStart_toEndOf="@id/expenseDescriptionField2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expenseDescriptionField1"/>
+
+        <EditText
+            android:id="@+id/expenseDescriptionField3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginEnd="5dp"
+
+            android:textSize="16sp"
+            android:hint="@string/expense_description_field_hint"
+            android:autofillHints=""
+            android:inputType="text"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/expensePriceField3"
+            app:layout_constraintTop_toBottomOf="@id/expenseDescriptionField2"/>
+
+        <EditText
+            android:id="@+id/expensePriceField3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:textSize="16sp"
+            android:hint="@string/expense_price_field_hint"
+            android:autofillHints=""
+            android:inputType="numberDecimal"
+
+            app:layout_constraintStart_toEndOf="@id/expenseDescriptionField3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expenseDescriptionField2"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/addMemberButton"
