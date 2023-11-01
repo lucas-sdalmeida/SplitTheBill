@@ -28,6 +28,7 @@ class MembersListViewAdapter(
 
         with(memberTileHolder) {
             memberName.text = member.name
+            memberExpenses.text = member.expenses.joinToString(", ") { it.description }
             memberTotalExpense.text = context.getString(
                 R.string.price_format,
                 String.format("%.2f", member.totalSpent)
@@ -50,6 +51,7 @@ class MembersListViewAdapter(
         val memberTileBinding = MemberTileBinding.inflate(inflater)
         val memberTileHolder = MemberTileHolder(
             memberTileBinding.memberName,
+            memberTileBinding.memberExpenses,
             memberTileBinding.memberTotalExpense,
             memberTileBinding.memberBalanceFactor,
         )
@@ -66,6 +68,7 @@ class MembersListViewAdapter(
 
     private data class MemberTileHolder(
         val memberName: TextView,
+        val memberExpenses: TextView,
         val memberTotalExpense: TextView,
         val memberBalanceFactor: TextView,
     )

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
+    android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -27,6 +27,21 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
+        android:id="@+id/memberExpenses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+
+        android:textSize="14sp"
+
+        app:layout_constraintStart_toStartOf="@id/memberName"
+        app:layout_constraintEnd_toEndOf="@id/memberTotalExpense"
+        app:layout_constraintTop_toBottomOf="@id/memberName"
+        app:layout_constraintBottom_toTopOf="@id/totalToReceive"/>
+
+    <TextView
         android:id="@+id/totalToReceive"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -36,7 +51,6 @@
 
         app:layout_constraintStart_toStartOf="@id/memberName"
         app:layout_constraintEnd_toEndOf="@id/memberName"
-        app:layout_constraintTop_toBottomOf="@id/memberName"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
@@ -50,7 +64,6 @@
 
         app:layout_constraintStart_toEndOf="@id/totalToReceive"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/memberName"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
