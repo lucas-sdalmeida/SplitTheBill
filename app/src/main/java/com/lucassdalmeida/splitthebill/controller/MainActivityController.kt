@@ -2,8 +2,6 @@ package com.lucassdalmeida.splitthebill.controller
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.os.Build
-import android.os.Parcelable
 import android.util.Log
 import android.view.MenuItem
 import android.widget.AdapterView.AdapterContextMenuInfo

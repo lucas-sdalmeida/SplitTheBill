@@ -2,10 +2,8 @@ package com.lucassdalmeida.splitthebill.controller
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.text.Editable
 import android.util.Log
 import android.widget.Toast
-import androidx.core.view.children
 import com.lucassdalmeida.splitthebill.R
 import com.lucassdalmeida.splitthebill.application.member.AddMemberService
 import com.lucassdalmeida.splitthebill.application.member.MemberDto
@@ -14,8 +12,6 @@ import com.lucassdalmeida.splitthebill.application.member.fromDto
 import com.lucassdalmeida.splitthebill.databinding.ActivityMemberBinding
 import com.lucassdalmeida.splitthebill.domain.model.member.Expense
 import com.lucassdalmeida.splitthebill.domain.model.member.Member
-import com.lucassdalmeida.splitthebill.persistence.inmemory.InMemoryIdGenerator
-import com.lucassdalmeida.splitthebill.persistence.inmemory.InMemoryMemberRepository
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteIdGenerator
 import com.lucassdalmeida.splitthebill.persistence.sqlite.SQLiteMemberRepositoryImpl
 import com.lucassdalmeida.splitthebill.view.MemberActivity
@@ -123,7 +119,7 @@ class MemberActivityController(
         val views = with(activityMemberBinding) {listOf(
             expenseDescriptionField1 to expensePriceField1,
             expenseDescriptionField2 to expensePriceField2,
-            expenseDescriptionField2 to expensePriceField2,
+            expenseDescriptionField3 to expensePriceField3,
         )}
 
         expenses.forEachIndexed { index, expense -> views[index].apply {
